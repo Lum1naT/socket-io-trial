@@ -18,9 +18,10 @@ io.on('connection', (socket) => {
   });
 
 
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
+  socket.on('chat message', (data) => {
+    console.log( data.username + ': ' + data.msg);
+    var date = new Date().toLocaleString();
+    io.emit('chat message', {username: data.username, msg: data.msg, timestamp: date});
 
   });
 

@@ -5,43 +5,74 @@
     <style>
       body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+      #chat_form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #chat_input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #chat_input:focus { outline: none; }
+      #chat_form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
 
       #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li { margin-left: auto; padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+      #chat { display: none;}
     </style>
 
   </head>
   
   <body>
-    <div>
+    <div id="name">
+      <form id="name_form" action="">
+       You will be chatting as:  <input type="text" id="name_input"/> <button> Go Chat! </button>
+      </form>
+    </div>
+    <div id="chat">
     <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+    <form id="chat_form" action="">
+      <input id="chat_input" autocomplete="off" /><button>Send</button>
     </form>
   </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
 
-      var form = document.getElementById('form');
-      var input = document.getElementById('input');
+      var chat_div = document.getElementById('chat');
+      var name_div = document.getElementById('name');
+
+      var name_form = document.getElementById('name_form');
+      var name_input = document.getElementById('name_input');
+      var chat_form = document.getElementById('chat_form');
+      var chat_input = document.getElementById('chat_input');
+      var username = '';
+      // to prevent name setting twice
+      var name_set = false;
     
-      form.addEventListener('submit', function(e) {
+      name_form.addEventListener('submit', function(e){
         e.preventDefault();
-        if (input.value) {
-          socket.emit('chat message', input.value);
-          input.value = '';
+        if(!name_set && name_input.value){
+          username = name_input.value;
+          name_div.style.display = "none";
+          chat_div.style.display = "block";
+          name_set = true;
+
         }
       });
 
-      socket.on('chat message', function(msg) {
+      chat_form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (chat_input.value) {
+          socket.emit('chat message', {username: username, msg: chat_input.value});
+          chat_input.value = '';
+        }
+      });
+
+      socket.on('chat message', function(data) {
         var item = document.createElement('li');
-        item.textContent = msg;
+        if(data.username == username){
+          var htmlUsername = "<b>" + username + "</b>" + ": ";
+
+        } else {
+          htmlUsername = data.username + ": ";
+        }
+        item.innerHTML = htmlUsername + data.msg + "<br/> <small>" + data.timestamp + "</small>";
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });
