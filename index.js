@@ -6,6 +6,13 @@ const port = process.env.PORT;
 const router = express.Router();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const admin = require('firebase-admin');
+
+var connection = null;
+r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+    if (err) throw err;
+    connection = conn;
+})
 
 
 io.on('connection', (socket) => {
