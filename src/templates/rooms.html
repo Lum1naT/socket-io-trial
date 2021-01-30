@@ -27,8 +27,8 @@
   
   <body>
     <div id="name">
-      <form id="name_form" action="/set-name" method="POST">
-       You will be chatting as:  <input type="text" required name="username" id="name_input" placeholder="Username"/> <button> Go Chat! </button>
+      <form id="name_form" action="/set-name" method="POST" enctype="application/json">
+       You will be chatting as:  <input type="text" id="name_input" placeholder="Username"/> <button> Go Chat! </button>
       </form>
     </div>
     <div id="chat">
@@ -48,7 +48,20 @@
       var name_input = document.getElementById('name_input');
       var chat_form = document.getElementById('chat_form');
       var chat_input = document.getElementById('chat_input');
+      var username = '';
+      // to prevent name setting twice
+      var name_set = false;
+    
+      name_form.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!name_set && name_input.value){
+          username = name_input.value;
+          name_div.style.display = "none";
+          chat_div.style.display = "block";
+          name_set = true;
 
+        }
+      });
 
       chat_form.addEventListener('submit', function(e) {
         e.preventDefault();

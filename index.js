@@ -1,18 +1,51 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT;
 const router = express.Router();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const admin = require('firebase-admin');
 
-var connection = null;
-r.connect( {host: 'localhost', port: 28015}, function(err, conn) {
-    if (err) throw err;
-    connection = conn;
-})
+/*
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./serviceAccountKeyFirebase.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rooms-chat-dummy-app-default-rtdb.europe-west1.firebasedatabase.app"
+});
+
+let database = admin.database();
+
+var obj = {name: "two", value: "omega"};
+var roomsRef = database.ref("rooms");
+
+roomsRef.push(obj, function(error) {
+  if (error) {
+    // The write failed...
+    console.log("Failed with error: " + error)
+  } else {
+    // The write was successful...
+    console.log("success")
+  }
+});
+
+roomsRef.on("value", function(snapshot) {
+  console.log(snapshot.val());
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+*/
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+
 
 
 io.on('connection', (socket) => {
@@ -41,9 +74,24 @@ app.get('/', function(req, res) {
 
 });
 
+app.post('/set-name', function(req, res) {
+    var username = req.body.username;
+    res.cookie('username', username).redirect('/rooms');    // sets cookie username
+});
+
+app.get('/rooms', function(req, res){
+
+  res.sendFile(path.join(__dirname + '/src/templates/rooms.html'));
+
+
+
+});
+
 
 // use router
 app.use('/', router);
+
+
 
 // define your root for css and html files
 app.use(express.static(__dirname + '/src'));
