@@ -1,42 +1,29 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>Socket.IO chat</title>
-    <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      #name { display: inline-flex; width: 100%; background-color:  #333; padding: 10px;}
-      #name_form {margin: 0 auto; vertical-align: middle; color: #efefef;}
-      #name_input {border: none; padding: 0.2rem 0.5rem; border-radius: 10px;}
-      #name_input:focus {outline: none;}
-      #name_form > button {border: none; padding: 0.2rem 1rem; border-radius: 5px; background: rgb(102, 102, 102); color: #efefef;}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-
-      #chat_form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #chat_input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #chat_input:focus { outline: none; }
-      #chat_form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { margin-left: auto; padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
-      #chat { display: none;}
-    </style>
-
+    <title>Hello, world!</title>
   </head>
-  
   <body>
-    <div id="name">
-      <form id="name_form" action="/set-name" method="POST" enctype="application/json">
-       You will be chatting as:  <input type="text" id="name_input" placeholder="Username"/> <button> Go Chat! </button>
-      </form>
-    </div>
-    <div id="chat">
-    <ul id="messages"></ul>
-    <form id="chat_form" action="">
-      <input id="chat_input" autocomplete="off" /><button>Send</button>
-    </form>
-  </div>
+    <h1>Hello, world!</h1>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    -->
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
@@ -48,7 +35,6 @@
       var name_input = document.getElementById('name_input');
       var chat_form = document.getElementById('chat_form');
       var chat_input = document.getElementById('chat_input');
-      var username = '';
       // to prevent name setting twice
       var name_set = false;
     

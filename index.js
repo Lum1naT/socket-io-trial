@@ -24,18 +24,11 @@ let database = admin.database();
 
 var obj = {name: "username", value: "omega"};
 var usersRef = database.ref("users");
+var roomsRef = database.ref("rooms");
+var msgsRef = database.ref("messages");
 
-usersRef.push(obj, function(error) {
-  if (error) {
-    // The write failed...
-    console.log("Failed with error: " + error)
-  } else {
-    // The write was successful...
-    console.log("success")
-  }
-});
 
-usersRef.on("value", function(snapshot) {
+roomsRef.on("value", function(snapshot) {
   console.log(snapshot.val());
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
@@ -52,6 +45,16 @@ app.use(cookieParser());
 io.on('connection', (socket) => {
   // on connection
   console.log('a user connected');
+
+usersRef.push(obj, function(error) {
+  if (error) {
+    // The write failed...
+    console.log("Failed with error: " + error)
+  } else {
+    // The write was successful...
+    console.log("success")
+  }
+});
 
   // on disconnect
   socket.on('disconnect', () => {
