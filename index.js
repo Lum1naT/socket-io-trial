@@ -9,7 +9,7 @@ const router = express.Router();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-/*
+// DO NOT EDIT
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./serviceAccountKeyFirebase.json");
@@ -20,11 +20,12 @@ admin.initializeApp({
 });
 
 let database = admin.database();
+// -------
 
-var obj = {name: "two", value: "omega"};
-var roomsRef = database.ref("rooms");
+var obj = {name: "username", value: "omega"};
+var usersRef = database.ref("users");
 
-roomsRef.push(obj, function(error) {
+usersRef.push(obj, function(error) {
   if (error) {
     // The write failed...
     console.log("Failed with error: " + error)
@@ -34,12 +35,12 @@ roomsRef.push(obj, function(error) {
   }
 });
 
-roomsRef.on("value", function(snapshot) {
+usersRef.on("value", function(snapshot) {
   console.log(snapshot.val());
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 });
-*/
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -60,7 +61,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (data) => {
     console.log( data.username + ': ' + data.msg);
-    var date = new Date().toLocaleString();
+    var date = new Date().toLocaleString("cs");
     io.emit('chat message', {username: data.username, msg: data.msg, timestamp: date});
 
   });
