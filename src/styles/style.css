@@ -1,0 +1,17 @@
+.chat {
+  width: 90% !important;
+  height: 80% !important;
+  background-color: #b6b6b6;
+}
+
+.messages {
+  height: 100% !important;
+  width: 70% !important;
+}
+
+.sessions {
+  height: 100% !important;
+  width: 30% !important;
+}
+
+/*# sourceMappingURL=style.css.map */
